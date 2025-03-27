@@ -1,0 +1,18 @@
+$TTL    1D
+@       IN      SOA     hq-srv.au-team.irpo. root.au-team.irpo. (
+                                2023092600      ; serial
+                                12H             ; refresh
+                                1H              ; retry
+                                1W              ; expire
+                                1H              ; ncache
+                        )
+@       IN      NS      hq-srv.au-team.irpo.
+hq-rtr  IN      A       192.168.10.1
+hq-srv  IN      A       192.168.10.2
+hq-cli  IN      A       192.168.10.66
+
+br-rtr  IN      A       172.16.5.2
+br-srv  IN      A       192.168.20.2
+
+moodle  IN      CNAME   br-srv
+wiki    IN      CNAME   br-srv
