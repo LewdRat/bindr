@@ -1,0 +1,11 @@
+#!/bin/bash
+
+apt-get install bind bind-utils
+systemctl enable --now bind
+mkdir /etc/bind/zone/master
+
+cp /dns/au-team.irpo /etc/bind/zone/master/au-team.irpo
+cp /dns/10.168.192.in-addr.arpa
+
+chown root:named /etc/bind/zone/master
+chown root:named /etc/bind/zone/master/*
