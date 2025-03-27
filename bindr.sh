@@ -10,6 +10,7 @@ cp /bindr/10.168.192.in-addr.arpa /etc/bind/zone/master/10.168.192.in-addr.arpa
 chown root:named /etc/bind/zone/master
 chown root:named /etc/bind/zone/master/*
 
-cp -p /bindr/local.conf /etc/bind/local.conf
 
-echo "Не забудь настроить options.conf, а после перезагрузить bind"
+#cp -p /bindr/local.conf /etc/bind/local.conf
+
+echo "Не забудь настроить local.conf и options.conf, а после перезагрузить bind"
