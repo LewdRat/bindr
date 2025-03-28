@@ -1,0 +1,56 @@
+HQ-RTR
+
+# Создаем ключ для парольной аутентификации ospf между маршрутизаторами
+hq-rtr(config)# key-chain auth_ospf
+hq-rtr(config-keychain)# key 1
+hq-rtr(config-keychain-key)# key-string ascii-text cisco_forever     //Указываем пароль cisco_forever
+br-rtr(config-keychain-key)# exit
+br-rtr(config-keychain)# exit
+
+hq-rtr(config)# router ospf 1
+hq-rtr(config-ospf)# router-id 100.10.10.1     //ip нашего gre туннеля
+hq-rtr(config-ospf)# area 0.0.0.0
+hq-rtr(config-ospf-area)# network 192.168.10.0/26
+hq-rtr(config-ospf-area)# network 192.168.10.64/28
+hq-rtr(config-ospf-area)# network 192.168.10.80/29
+hq-rtr(config-ospf-area)# enable
+hq-rtr(config-ospf-area)# exit
+hq-rtr(config-ospf)# enable
+hq-rtr(config-ospf)# exit
+
+hq-rtr(config)# tunnel gre 1
+hq-rtr(config-if-gi)# ip ospf instance 1    //номер процесса ospf
+hq-rtr(config-if-gi)# ip ospf
+hq-rtr(config-if-gi)# ip ospf authentication key-chain auth_ospf
+hq-rtr(config-if-gi)# ip ospf authentication algorithm md5
+hq-rtr(config-if-gi)# end
+
+hq-rtr# commit
+hq-rtr# confirm
+
+BR-RTR
+
+br-rtr(config)# key-chain auth_ospf
+br-rtr(config-keychain)# key 1
+br-rtr(config-keychain-key)# key-string ascii-text cisco_forever
+br-rtr(config-keychain-key)# exit
+br-rtr(config-keychain)# exit
+
+br-rtr(config)# router ospf 1
+br-rtr(config-ospf)# router-id 100.10.10.2
+br-rtr(config-ospf)# area 0.0.0.0
+br-rtr(config-ospf-area)# network 192.168.20.0/27
+br-rtr(config-ospf-area)# enable
+br-rtr(config-ospf-area)# exit
+br-rtr(config-ospf)# enable
+br-rtr(config-ospf)# exit
+
+br-rtr(config)# tunnel gre 1
+br-rtr(config-if-gi)# ip ospf instance 1
+br-rtr(config-if-gi)# ip ospf
+br-rtr(config-if-gi)# ip ospf authentication key-chain auth_ospf
+br-rtr(config-if-gi)# ip ospf authentication algorithm md5
+br-rtr(config-if-gi)# end
+
+br-rtr# commit
+br-rtr# confirm
